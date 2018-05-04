@@ -12,15 +12,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Item
 
     RecyclerView mRecyclerView;
     ArrayList arrayList;
-    private MovieAdapter mAdapter;
 
     private static final int NUM_LIST_ITEMS = 100;
 
-    final static String imageBaseURL = "https://image.tmdb.org/t/p/";
-    final static String fileSize = "w185";
-    // !!!!!!!!!!!!!!!!!!!!!!! PLEASE BE SURE TO NOT SHARE THIS ON GITHUB !!!!!!!!!!!!!!!!!!!!!!!
-    // !!!!!!!!!!!!!!!!!!!!!!! THIS IS YOUR OWN PERSONAL KEY !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    final static String key = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
