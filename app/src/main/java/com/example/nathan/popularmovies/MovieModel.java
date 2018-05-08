@@ -2,13 +2,11 @@ package com.example.nathan.popularmovies;
 
 public class MovieModel {
     public String mMovieTitle;
-    public int movieNumber;
-    public String Filler;
+    public String mMoviePosterURL;
 
-    public MovieModel(String title, int number, String fill){
+    public MovieModel(String title, String poster){
         mMovieTitle = title;
-        movieNumber = number;
-        Filler = fill;
+        mMoviePosterURL = poster;
     }
 
 }

@@ -8,16 +8,15 @@ import okhttp3.Response;
 
 public class MovieAPICall {
 
-    public int mMovieArraySize;
+    public int mPageNumber;
+    final static private String BaseURL =  "https://api.themoviedb.org/3/discover/movie";
+    final static private String Filter = "&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=";
 
-    // HTTP get request
-    final static String imageBaseURL = "https://image.tmdb.org/t/p/";
-    final static String fileSize = "w185";
-    // !!!!!!!!!!!!!!!!!!!!!!! PLEASE BE SURE TO NOT SHARE THIS ON GITHUB !!!!!!!!!!!!!!!!!!!!!!!
-    // !!!!!!!!!!!!!!!!!!!!!!! THIS IS YOUR OWN PERSONAL KEY !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    final static String key = "api_key=e5d9e7a3d1a18c5caa632a613d622aae";
+    public String SearchURL;
 
     OkHttpClient client = new OkHttpClient();
+
+
 
     String run(String url) throws IOException {
         Request request = new Request.Builder()
@@ -28,13 +27,20 @@ public class MovieAPICall {
         return response.body().string();
     }
 
-    public void MovieAPICall(int numberOfMovies){
-        mMovieArraySize = numberOfMovies;
+    public MovieAPICall(int page, String API_KEY) throws IOException {
+        SearchURL = BaseURL + API_KEY + Filter;
+        mPageNumber = page;
 
-        APICall();
+        ArrayAPICall();
     }
 
-    private void APICall() {
-        run(imageBaseURL + )
+    public CreateMovieArrayList ArrayAPICall() throws IOException {
+        String ReturnedData = run(SearchURL + String.valueOf(mPageNumber));
+
+//        TODO 2 create a JsonUtils class to handle the formatting the data
+//        TODO 3 Store the data in an array list
+//        TODO 4 Pass the list back to main and Create a new Class
+//        TODO 4.1 New class will handle creating the array and passing it to the adapater to be displayed.
+        return new CreateMovieArrayList(ReturnedData);
     }
 }

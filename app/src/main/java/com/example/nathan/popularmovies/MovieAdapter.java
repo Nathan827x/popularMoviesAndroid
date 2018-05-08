@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 /**
@@ -46,7 +48,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
         public void setData (MovieModel item){
             this.MovieInstance = item;
             mMovieTitle.setText(item.mMovieTitle);
-            // TODO (1) Set ImageView after you get array of images from api
+            Picasso.get().load(item.mMoviePosterURL).into(mMoviePoster);
 
 
         }

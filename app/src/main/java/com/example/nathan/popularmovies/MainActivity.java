@@ -6,14 +6,18 @@ import android.support.v7.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.ItemListener{
 
     RecyclerView mRecyclerView;
-    ArrayList arrayList;
-
-    private static final int NUM_LIST_ITEMS = 100;
+    MovieAPICall arrayList;
+    // !!!!!!!!!!!!!!!!!!!!!!! PLEASE BE SURE TO NOT SHARE THIS ON GITHUB !!!!!!!!!!!!!!!!!!!!!!!
+    // !!!!!!!!!!!!!!!!!!!!!!! THIS IS YOUR OWN PERSONAL KEY !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    private String API_KEY = "?api_key=";
+    // Notes
+    // When making the api call to get the most popular movies, there are 20 movies per page
 
 
     @Override
@@ -22,9 +26,15 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Item
         setContentView(R.layout.activity_main);
 
         mRecyclerView = findViewById(R.id.rv_movies);
-        arrayList = new ArrayList();
-        arrayList.add(new MovieModel("Item 1", 1, "#09A9FF")); // Here is where
-        arrayList.add(new MovieModel("Item 2", 2, "#09A9FA")); // Here is where
+
+        try {
+            arrayList = new MovieAPICall(1, API_KEY);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+//        arrayList = new ArrayList();
+//        arrayList.add(new MovieModel("MovieTitle1", "http://image.tmdb .org/t/p/w185/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg")); // Here is where
+//        arrayList.add(new MovieModel("MovieTitle2", "http://image.tmdb.org/t/p/w185/jjPJ4s3DWZZvI4vw8Xfi4Vqa1Q8.jpg")); // Here is where
         // we need to make an api call somewhere
 
         MovieAdapter adapter = new MovieAdapter(this, arrayList, this);
