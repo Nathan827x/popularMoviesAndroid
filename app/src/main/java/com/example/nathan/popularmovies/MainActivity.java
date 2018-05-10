@@ -27,17 +27,22 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Item
 
         mRecyclerView = findViewById(R.id.rv_movies);
 
-        try {
-            arrayList = new MovieAPICall(1, API_KEY);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-//        arrayList = new ArrayList();
+        arrayList = new MovieAPICall(1, API_KEY);
+        //        arrayList = new ArrayList();
 //        arrayList.add(new MovieModel("MovieTitle1", "http://image.tmdb .org/t/p/w185/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg")); // Here is where
 //        arrayList.add(new MovieModel("MovieTitle2", "http://image.tmdb.org/t/p/w185/jjPJ4s3DWZZvI4vw8Xfi4Vqa1Q8.jpg")); // Here is where
         // we need to make an api call somewhere
 
-        MovieAdapter adapter = new MovieAdapter(this, arrayList, this);
+        MovieAdapter adapter = null;
+
+
+        try {
+            adapter = new MovieAdapter(this, arrayList.ArrayAPICall(), this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
         mRecyclerView.setAdapter(adapter);
 
         com.example.nathan.popularmovies.GridLayoutManager layoutManager =
