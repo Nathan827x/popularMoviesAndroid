@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -16,27 +17,32 @@ public class CreateMovieArrayList {
     final static String ImageSize = "w185";
     public String imageURL = ImageBaseURL + ImageSize;
 
-    public ArrayList MovieList;
+    String mJson;
 
     public CreateMovieArrayList(String json) {
-        try {
-            JSONObject jsonObject = new JSONObject(json);
-            JSONArray SearchResults = jsonObject.getJSONArray("results");
+        mJson = json;
+    }
 
-            ArrayList Results;
-            String MovieTitle;
-            String ImageURL;
+    public ArrayList CreateArray(){
+        try {
+            JSONObject jsonObject = new JSONObject(mJson);
+            JSONObject SearchResults = jsonObject.getJSONObject("results");
+
+            JSONObject MovieTitle;
+            JSONObject PosterPath;
+            ArrayList Results = new ArrayList();
             for (int i = 0; i < SearchResults.length(); i++){
                 MovieTitle = SearchResults.getJSONObject("title");
+                PosterPath = SearchResults.getJSONObject("poster_path");
 
-
-                Results.add(MovieTitle, ImageURL);
+                Results.add(new MovieModel(MovieTitle.toString(), imageURL + PosterPath));
             }
-
+            return Results;
 
         } catch (JSONException e){
             e.printStackTrace();
         }
+        return null;
     }
 
 }
