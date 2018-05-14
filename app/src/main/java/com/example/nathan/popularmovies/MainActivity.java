@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Item
         mRecyclerView = findViewById(R.id.rv_movies);
 
         arrayList = new MovieAPICall(1, API_KEY);
+
         //        arrayList = new ArrayList();
 //        arrayList.add(new MovieModel("MovieTitle1", "http://image.tmdb .org/t/p/w185/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg")); // Here is where
 //        arrayList.add(new MovieModel("MovieTitle2", "http://image.tmdb.org/t/p/w185/jjPJ4s3DWZZvI4vw8Xfi4Vqa1Q8.jpg")); // Here is where
@@ -63,8 +64,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Item
 //        Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(test2);
 //        Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(test3);
 //        Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(test4);
-
-
     }
 
     @Override
