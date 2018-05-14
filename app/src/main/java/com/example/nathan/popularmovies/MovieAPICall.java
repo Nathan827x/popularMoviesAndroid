@@ -5,6 +5,8 @@ import android.os.AsyncTask;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -23,9 +25,11 @@ public class MovieAPICall{
     }
 
     public ArrayList ArrayAPICall() throws IOException {
+        GetCall APIRequest = new GetCall();
+        String ReturnedData;
+        ReturnedData = APIRequest.GetRequest(SearchURL + String.valueOf(mPageNumber));
 
-        String ReturnedData = run(SearchURL + String.valueOf(mPageNumber));
-        if (ReturnedData != "") {
+        if (ReturnedData != null) {
             CreateMovieArrayList MovieArrayList = new CreateMovieArrayList(ReturnedData);
             ArrayList Results = MovieArrayList.CreateArray();
             return Results;
@@ -38,14 +42,33 @@ public class MovieAPICall{
         return null;
     }
 
-    OkHttpClient client = new OkHttpClient();
-    public String run(String url) throws IOException {
 
+}
+
+    class GetCall{
+    OkHttpClient client = new OkHttpClient();
+    String GetRequest(String url) {
+        final String[] result = new String[1];
         Request request = new Request.Builder()
                 .url(url)
                 .build();
 
-            Response response = client.newCall(request).execute();
-            return response.body().string();
+//        Response response = client.newCall(request).execute();
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    e.printStackTrace();
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    if (!response.isSuccessful()){
+                        throw new IOException("Unexpected code " + response);
+                    } else {
+                        result[0] = response.body().string();
+                    }
+                }
+            });
+            return result[0];
+        }
     }
-}
