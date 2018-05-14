@@ -49,8 +49,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
             this.MovieInstance = item;
             mMovieTitle.setText(item.mMovieTitle);
             Picasso.get().load(item.mMoviePosterURL).into(mMoviePoster);
-
-
         }
 
         @Override
@@ -76,6 +74,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
 
     @Override
     public int getItemCount() {
+        if (mValues == null){
+            return 0;
+        }
         return mValues.size();
     }
 
