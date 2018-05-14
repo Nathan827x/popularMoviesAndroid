@@ -26,16 +26,19 @@ public class CreateMovieArrayList {
     public ArrayList CreateArray(){
         try {
             JSONObject jsonObject = new JSONObject(mJson);
-            JSONObject SearchResults = jsonObject.getJSONObject("results");
+            JSONArray SearchResults = jsonObject.getJSONArray("results");
+//            JSONObject SearchResults = jsonObject.getJSONObject("results");
 
-            JSONObject MovieTitle;
-            JSONObject PosterPath;
+//            JSONObject MovieTitle;
+//            JSONObject PosterPath;
+            String MovieTitle;
+            String PosterPath;
             ArrayList Results = new ArrayList();
             for (int i = 0; i < SearchResults.length(); i++){
-                MovieTitle = SearchResults.getJSONObject("title");
-                PosterPath = SearchResults.getJSONObject("poster_path");
-
-                Results.add(new MovieModel(MovieTitle.toString(), imageURL + PosterPath));
+                JSONObject Movie = SearchResults.getJSONObject(i);
+                MovieTitle = Movie.getString("title");
+                PosterPath = Movie.getString("poster_path");
+                Results.add(new MovieModel(MovieTitle, imageURL + PosterPath));
             }
             return Results;
 
