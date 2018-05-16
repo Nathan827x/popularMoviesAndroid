@@ -3,10 +3,10 @@ package com.example.nathan.popularmovies;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.ItemListener{
@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Item
     private String API_KEY = "?api_key=";
     // Notes
     // When making the api call to get the most popular movies, there are 20 movies per page
-
+    MovieAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,23 +34,21 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Item
 //        arrayList.add(new MovieModel("MovieTitle2", "http://image.tmdb.org/t/p/w185/jjPJ4s3DWZZvI4vw8Xfi4Vqa1Q8.jpg")); // Here is where
         // we need to make an api call somewhere
 
-        MovieAdapter adapter = null;
+        arrayList.ArrayAPICall(new MovieAPICall.ResponseListener() {
+            @Override
+            public void onFailure(int errorCode) {
+                Log.d("Error", errorCode + "");
+            }
 
-
-        try {
-            adapter = new MovieAdapter(this, arrayList.ArrayAPICall(), this);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-        mRecyclerView.setAdapter(adapter);
-
-        com.example.nathan.popularmovies.GridLayoutManager layoutManager =
-                new com.example.nathan.popularmovies.GridLayoutManager(this, 500);
-        mRecyclerView.setLayoutManager(layoutManager);
-
-
+            @Override
+            public void onSuccess(ArrayList data) {
+                adapter = new MovieAdapter(MainActivity.this, data, MainActivity.this);
+                mRecyclerView.setAdapter(adapter);
+                GridLayoutManager layoutManager =
+                        new GridLayoutManager(MainActivity.this, 500);
+                mRecyclerView.setLayoutManager(layoutManager);
+            }
+        });
 
 
 //        // Testing picasso library
