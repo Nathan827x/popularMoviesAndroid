@@ -12,6 +12,11 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class MovieAPICall{
+    public interface ResponseListener {
+        void onFailure(int errorCode);
+
+        void onSuccess(ArrayList data);
+    }
 
     public int mPageNumber;
     final static private String BaseURL =  "https://api.themoviedb.org/3/discover/movie";
@@ -24,22 +29,14 @@ public class MovieAPICall{
         mPageNumber = page;
     }
 
-    public ArrayList ArrayAPICall() throws IOException {
+    public void ArrayAPICall(ResponseListener responseListener){
         GetCall APIRequest = new GetCall();
-        String ReturnedData;
-        ReturnedData = APIRequest.GetRequest(SearchURL + String.valueOf(mPageNumber));
-
-        if (ReturnedData != null) {
-            CreateMovieArrayList MovieArrayList = new CreateMovieArrayList(ReturnedData);
-            ArrayList Results = MovieArrayList.CreateArray();
-            return Results;
-        }
+        APIRequest.GetRequest(SearchURL + String.valueOf(mPageNumber), responseListener);
 
 //        Complete 2 create a JsonUtils class to handle the formatting the data
 //        Complete 3 Store the data in an array list
 //        Complete 4 Pass the list back to main and Create a new Class
 //        Complete 4.1 New class will handle creating the array and passing it to the adapater to be displayed.
-        return null;
     }
 
 
@@ -47,8 +44,7 @@ public class MovieAPICall{
 
     class GetCall{
     OkHttpClient client = new OkHttpClient();
-    String GetRequest(String url) {
-        final String[] result = new String[1];
+    void GetRequest(String url, final MovieAPICall.ResponseListener responseListener) {
         Request request = new Request.Builder()
                 .url(url)
                 .build();
@@ -63,12 +59,13 @@ public class MovieAPICall{
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
                     if (!response.isSuccessful()){
-                        throw new IOException("Unexpected code " + response);
+                        responseListener.onFailure(response.code());
                     } else {
-                        result[0] = response.body().string();
+                        CreateMovieArrayList MovieArrayList = new CreateMovieArrayList(response.body().string());
+                        ArrayList Results = MovieArrayList.CreateArray();
+                        responseListener.onSuccess(Results);
                     }
                 }
             });
-            return result[0];
         }
     }
