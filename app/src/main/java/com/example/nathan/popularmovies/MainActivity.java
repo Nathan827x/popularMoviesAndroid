@@ -41,12 +41,18 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Item
             }
 
             @Override
-            public void onSuccess(ArrayList data) {
-                adapter = new MovieAdapter(MainActivity.this, data, MainActivity.this);
-                mRecyclerView.setAdapter(adapter);
-                GridLayoutManager layoutManager =
-                        new GridLayoutManager(MainActivity.this, 500);
-                mRecyclerView.setLayoutManager(layoutManager);
+            public void onSuccess(final ArrayList data) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter = new MovieAdapter(MainActivity.this, data, MainActivity.this);
+                        mRecyclerView.setAdapter(adapter);
+                        GridLayoutManager layoutManager =
+                                new GridLayoutManager(MainActivity.this, 500);
+                        mRecyclerView.setLayoutManager(layoutManager);
+                    }
+                });
+
             }
         });
 
