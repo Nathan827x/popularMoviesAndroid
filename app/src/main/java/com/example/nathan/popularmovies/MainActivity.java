@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
-import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.ItemListener{
@@ -15,10 +13,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Item
     MovieAPICall arrayList;
     // !!!!!!!!!!!!!!!!!!!!!!! PLEASE BE SURE TO NOT SHARE THIS ON GITHUB !!!!!!!!!!!!!!!!!!!!!!!
     // !!!!!!!!!!!!!!!!!!!!!!! THIS IS YOUR OWN PERSONAL KEY !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    private String API_KEY = "?api_key=";
+    private String API_KEY = "?api_key=e5d9e7a3d1a18c5caa632a613d622aae";
     // Notes
     // When making the api call to get the most popular movies, there are 20 movies per page
     MovieAdapter adapter;
+    private EndlessRecyclerViewScrollListener scrollListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Item
 
         mRecyclerView = findViewById(R.id.rv_movies);
 
+
         arrayList = new MovieAPICall(1, API_KEY);
 
         //        arrayList = new ArrayList();
@@ -34,6 +34,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Item
 //        arrayList.add(new MovieModel("MovieTitle2", "http://image.tmdb.org/t/p/w185/jjPJ4s3DWZZvI4vw8Xfi4Vqa1Q8.jpg")); // Here is where
         // we need to make an api call somewhere
 
+
+//        TODO 1 Try and separate the data and instantiating the adapter
+//        TODO 2 if this works, you can use the EndlessRecyclerViewScrollListener to make your calls
+//        TODO 3 if that doesn't work try making another function for all api call.
         arrayList.ArrayAPICall(new MovieAPICall.ResponseListener() {
             @Override
             public void onFailure(int errorCode) {
@@ -55,7 +59,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Item
 
             }
         });
-
 
 //        // Testing picasso library
 //        ImageView mMoviePicture = findViewById(R.id.tv_moviePicture);

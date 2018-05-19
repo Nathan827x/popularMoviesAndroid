@@ -2,12 +2,14 @@ package com.example.nathan.popularmovies;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -22,11 +24,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
     ArrayList<MovieModel> mValues;
     Context mContext;
     protected ItemListener mListener;
+    private static final String TAG = MovieAdapter.class.getSimpleName();
+    private int number;
 
     public MovieAdapter (Context context, ArrayList values, ItemListener itemListener){
         mValues = values;
         mContext = context;
         mListener = itemListener;
+        number = mValues.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -55,6 +60,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
         public void onClick(View v) {
             if (mListener != null){
                 mListener.onItemClick(MovieInstance);
+                Toast.makeText(mContext, "You clicked something!!", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -69,12 +75,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        Log.d(TAG, "#" + position);
         holder.setData(mValues.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return number;
     }
 
     public interface ItemListener {
