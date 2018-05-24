@@ -22,6 +22,7 @@ public class MovieAPICall{
     final static private String BaseURL =  "https://api.themoviedb.org/3/discover/movie";
     final static private String Filter = "&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=";
 
+
     public String SearchURL;
 
     public MovieAPICall(int page, String API_KEY) {
@@ -63,6 +64,28 @@ public class MovieAPICall{
                     } else {
                         CreateMovieArrayList MovieArrayList = new CreateMovieArrayList(response.body().string());
                         ArrayList Results = MovieArrayList.CreateArray();
+                        responseListener.onSuccess(Results);
+                    }
+                }
+            });
+        }
+        void GetDescription(String url, final MovieAPICall.ResponseListener responseListener) {
+            Request request = new Request.Builder()
+                    .url(url)
+                    .build();
+
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    e.printStackTrace();
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    if (!response.isSuccessful()){
+                        responseListener.onFailure(response.code());
+                    } else {
+
                         responseListener.onSuccess(Results);
                     }
                 }

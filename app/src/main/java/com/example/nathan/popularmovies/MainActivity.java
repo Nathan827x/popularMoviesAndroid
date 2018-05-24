@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -13,7 +14,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Item
     MovieAPICall arrayList;
     // !!!!!!!!!!!!!!!!!!!!!!! PLEASE BE SURE TO NOT SHARE THIS ON GITHUB !!!!!!!!!!!!!!!!!!!!!!!
     // !!!!!!!!!!!!!!!!!!!!!!! THIS IS YOUR OWN PERSONAL KEY !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    private String API_KEY = "?api_key=e5d9e7a3d1a18c5caa632a613d622aae";
+    private String API_KEY = "?api_key=";
     // Notes
     // When making the api call to get the most popular movies, there are 20 movies per page
     MovieAdapter adapter;
@@ -26,8 +27,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Item
 
         mRecyclerView = findViewById(R.id.rv_movies);
 
-
-        arrayList = new MovieAPICall(1, API_KEY);
+        loadData(1, API_KEY);
 
         //        arrayList = new ArrayList();
 //        arrayList.add(new MovieModel("MovieTitle1", "http://image.tmdb .org/t/p/w185/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg")); // Here is where
@@ -38,6 +38,29 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Item
 //        TODO 1 Try and separate the data and instantiating the adapter
 //        TODO 2 if this works, you can use the EndlessRecyclerViewScrollListener to make your calls
 //        TODO 3 if that doesn't work try making another function for all api call.
+
+
+//        // Testing picasso library
+//        ImageView mMoviePicture = findViewById(R.id.tv_moviePicture);
+//        ImageView test2 = findViewById(R.id.testImage2);
+//        ImageView test3 = findViewById(R.id.testImage3);
+//        ImageView test4 = findViewById(R.id.testImage4);
+//
+//
+//        Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(mMoviePicture);
+//        Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(test2);
+//        Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(test3);
+//        Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(test4);
+    }
+
+    @Override
+    public void onItemClick(MovieModel item) {
+        Toast.makeText(this, "This is on the main page", Toast.LENGTH_SHORT).show();
+
+    }
+
+    private void loadData(int page, String API){
+        arrayList = new MovieAPICall(page, API);
         arrayList.ArrayAPICall(new MovieAPICall.ResponseListener() {
             @Override
             public void onFailure(int errorCode) {
@@ -59,22 +82,5 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Item
 
             }
         });
-
-//        // Testing picasso library
-//        ImageView mMoviePicture = findViewById(R.id.tv_moviePicture);
-//        ImageView test2 = findViewById(R.id.testImage2);
-//        ImageView test3 = findViewById(R.id.testImage3);
-//        ImageView test4 = findViewById(R.id.testImage4);
-//
-//
-//        Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(mMoviePicture);
-//        Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(test2);
-//        Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(test3);
-//        Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(test4);
-    }
-
-    @Override
-    public void onItemClick(MovieModel item) {
-
     }
 }

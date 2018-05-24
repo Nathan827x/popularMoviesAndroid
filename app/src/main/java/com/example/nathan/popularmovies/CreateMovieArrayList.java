@@ -33,12 +33,14 @@ public class CreateMovieArrayList {
 //            JSONObject PosterPath;
             String MovieTitle;
             String PosterPath;
+            int MovieID;
             ArrayList Results = new ArrayList();
             for (int i = 0; i < SearchResults.length(); i++){
                 JSONObject Movie = SearchResults.getJSONObject(i);
                 MovieTitle = Movie.getString("title");
                 PosterPath = Movie.getString("poster_path");
-                Results.add(new MovieModel(MovieTitle, imageURL + PosterPath));
+                MovieID = Movie.getInt("id");
+                Results.add(new MovieModel(MovieTitle, imageURL + PosterPath, MovieID));
             }
             return Results;
 

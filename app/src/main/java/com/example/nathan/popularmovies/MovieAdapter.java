@@ -60,7 +60,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
         public void onClick(View v) {
             if (mListener != null){
                 mListener.onItemClick(MovieInstance);
-                Toast.makeText(mContext, "You clicked something!!", Toast.LENGTH_SHORT).show();
             }
         }
     }
