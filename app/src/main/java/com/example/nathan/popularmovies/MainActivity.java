@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Item
     MovieAPICall arrayList;
     // !!!!!!!!!!!!!!!!!!!!!!! PLEASE BE SURE TO NOT SHARE THIS ON GITHUB !!!!!!!!!!!!!!!!!!!!!!!
     // !!!!!!!!!!!!!!!!!!!!!!! THIS IS YOUR OWN PERSONAL KEY !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    private String API_KEY = "?api_key=";
+    private String API_KEY = "?api_key=e5d9e7a3d1a18c5caa632a613d622aae";
     // Notes
     // When making the api call to get the most popular movies, there are 20 movies per page
     MovieAdapter adapter;
@@ -26,8 +26,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Item
         setContentView(R.layout.activity_main);
 
         mRecyclerView = findViewById(R.id.rv_movies);
+        adapter = new MovieAdapter(this);
 
-        loadData(1, API_KEY);
+//        loadData(1, API_KEY);
 
         //        arrayList = new ArrayList();
 //        arrayList.add(new MovieModel("MovieTitle1", "http://image.tmdb .org/t/p/w185/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg")); // Here is where
@@ -59,28 +60,28 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Item
 
     }
 
-    private void loadData(int page, String API){
-        arrayList = new MovieAPICall(page, API);
-        arrayList.ArrayAPICall(new MovieAPICall.ResponseListener() {
-            @Override
-            public void onFailure(int errorCode) {
-                Log.d("Error", errorCode + "");
-            }
-
-            @Override
-            public void onSuccess(final ArrayList data) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        adapter = new MovieAdapter(MainActivity.this, data, MainActivity.this);
-                        mRecyclerView.setAdapter(adapter);
-                        GridLayoutManager layoutManager =
-                                new GridLayoutManager(MainActivity.this, 500);
-                        mRecyclerView.setLayoutManager(layoutManager);
-                    }
-                });
-
-            }
-        });
-    }
+//    private void loadData(int page, String API){
+//        arrayList = new MovieAPICall(page, API);
+//        arrayList.ArrayAPICall(new MovieAPICall.ResponseListener() {
+//            @Override
+//            public void onFailure(int errorCode) {
+//                Log.d("Error", errorCode + "");
+//            }
+//
+//            @Override
+//            public void onSuccess(final ArrayList data) {
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        adapter = new MovieAdapter(MainActivity.this, data, MainActivity.this);
+//                        mRecyclerView.setAdapter(adapter);
+//                        GridLayoutManager layoutManager =
+//                                new GridLayoutManager(MainActivity.this, 500);
+//                        mRecyclerView.setLayoutManager(layoutManager);
+//                    }
+//                });
+//
+//            }
+//        });
+//    }
 }

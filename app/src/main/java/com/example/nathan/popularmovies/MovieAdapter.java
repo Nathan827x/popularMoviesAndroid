@@ -1,6 +1,7 @@
 package com.example.nathan.popularmovies;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,11 +28,25 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
     private static final String TAG = MovieAdapter.class.getSimpleName();
     private int number;
 
-    public MovieAdapter (Context context, ArrayList values, ItemListener itemListener){
-        mValues = values;
+//    public MovieAdapter (Context context, ArrayList values, ItemListener itemListener){
+//        mValues = values;
+//        mContext = context;
+//        mListener = itemListener;
+//        number = mValues.size();
+//    }
+
+    public MovieAdapter (Context context){
         mContext = context;
+        mValues = new ArrayList<>();
+    }
+
+    public ArrayList<MovieModel> getmValues() {
+        return mValues;
+    }
+
+    public void setmValues(ArrayList<MovieModel> MovieResult, ItemListener itemListener){
+        mValues = MovieResult;
         mListener = itemListener;
-        number = mValues.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
