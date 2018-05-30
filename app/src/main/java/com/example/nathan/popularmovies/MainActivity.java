@@ -2,11 +2,17 @@ package com.example.nathan.popularmovies;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.util.SortedList;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.Toast;
 
-import java.util.ArrayList;
+import com.example.nathan.popularmovies.api.MovieAPICall;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.ItemListener{
 
@@ -27,6 +33,19 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Item
 
         mRecyclerView = findViewById(R.id.rv_movies);
         adapter = new MovieAdapter(this);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 500);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.setAdapter(adapter);
+
+        scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                LoadNextData(page + 1);
+            }
+        };
+        mRecyclerView.addOnScrollListener(scrollListener);
+
 
 //        loadData(1, API_KEY);
 
@@ -58,6 +77,33 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Item
     public void onItemClick(MovieModel item) {
         Toast.makeText(this, "This is on the main page", Toast.LENGTH_SHORT).show();
 
+    }
+
+    private List<Result> fetchResults(Response<MovieModel> response) {
+        MovieModel model = response.body();
+        return topRatedMovies.getResults();
+    }
+
+    private void LoadNextData(int page){
+        Log.d(TAG, "loadNextPage: " + page);
+
+        MovieAPICall().enqueue(new Callback<MovieModel>() {
+            @Override
+            public void onResponse(Call<MovieModel> call, Response<MovieModel> response) {
+                adapter.removeLoadingFooter();
+
+                List<Result> results = fetchResults(response);
+                adapter.addAll(results);
+
+                if (currentPage != TOTAL_PAGES) adapter.addLoadingFooter();
+                else isLastPage = true;
+            }
+
+            @Override
+            public void onFailure(Call<MovieModel> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
     }
 
 //    private void loadData(int page, String API){
