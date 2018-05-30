@@ -1,7 +1,10 @@
-package com.example.nathan.popularmovies;
+package com.example.nathan.popularmovies.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MovieModel {
 
@@ -20,6 +23,10 @@ public class MovieModel {
     @SerializedName("id")
     @Expose
     private int mMovieID;
+
+    @SerializedName("results")
+    @Expose
+    private List<APIResults> results = new ArrayList<APIResults>();
 
     public String getTitle(){
         return mMovieTitle;
@@ -44,5 +51,14 @@ public class MovieModel {
     public void setMovieID(int id) {
         mMovieID = id;
     }
+
+    public List<APIResults> getResults() {
+        return results;
+    }
+
+    public void setResults(List<APIResults> results) {
+        this.results = results;
+    }
+
 
 }
