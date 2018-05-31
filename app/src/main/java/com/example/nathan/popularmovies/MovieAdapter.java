@@ -1,7 +1,6 @@
 package com.example.nathan.popularmovies;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,11 +9,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.nathan.popularmovies.models.APIResults;
+import com.example.nathan.popularmovies.models.MovieModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Nathan on 4/21/2018.
@@ -28,6 +29,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
     private static final String TAG = MovieAdapter.class.getSimpleName();
     private int number;
 
+    private List<APIResults> movieResults;
+
+
 //    public MovieAdapter (Context context, ArrayList values, ItemListener itemListener){
 //        mValues = values;
 //        mContext = context;
@@ -40,6 +44,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
         mValues = new ArrayList<>();
     }
 
+
     public ArrayList<MovieModel> getmValues() {
         return mValues;
     }
@@ -47,6 +52,16 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
     public void setmValues(ArrayList<MovieModel> MovieResult, ItemListener itemListener){
         mValues = MovieResult;
         mListener = itemListener;
+    }
+
+    public void addAll(List<APIResults> moveResults){
+        for (APIResults result : moveResults) {
+            add(result);
+        }
+    }
+    public void add(APIResults r) {
+        movieResults.add(r);
+        notifyItemInserted(movieResults.size() - 1);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

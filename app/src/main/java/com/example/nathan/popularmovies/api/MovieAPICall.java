@@ -29,7 +29,7 @@ public class MovieAPICall {
 ////        Complete 4.1 New class will handle creating the array and passing it to the adapater to be displayed.
 //    }
 
-    public static Retrofit GetCall(Context context) {
+    public static Retrofit GetCall() {
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
                     .addConverterFactory(GsonConverterFactory.create())

@@ -1,14 +1,19 @@
 package com.example.nathan.popularmovies;
 
+import android.graphics.Movie;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.util.SortedList;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.nathan.popularmovies.api.APIService;
 import com.example.nathan.popularmovies.api.MovieAPICall;
+import com.example.nathan.popularmovies.models.APIResults;
+import com.example.nathan.popularmovies.models.MovieModel;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -18,9 +23,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Item
 
     RecyclerView mRecyclerView;
     MovieAPICall arrayList;
+
+    private static final int PAGE_START = 1;
+    private int CurrentPage = PAGE_START;
+    private int TOTAL_PAGES = 6;
     // !!!!!!!!!!!!!!!!!!!!!!! PLEASE BE SURE TO NOT SHARE THIS ON GITHUB !!!!!!!!!!!!!!!!!!!!!!!
     // !!!!!!!!!!!!!!!!!!!!!!! THIS IS YOUR OWN PERSONAL KEY !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    private String API_KEY = "?api_key=e5d9e7a3d1a18c5caa632a613d622aae";
+    private final String API_KEY = "";
     // Notes
     // When making the api call to get the most popular movies, there are 20 movies per page
     MovieAdapter adapter;
@@ -37,6 +46,12 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Item
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(adapter);
+
+//      Initialize api call
+        APIService apiService = MovieAPICall.GetCall().create(APIService.class);
+        loadFirstPage();
+
+
 
         scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
@@ -73,16 +88,40 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Item
 //        Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(test4);
     }
 
+    private Call<MovieModel> CallTopRatedMovies(){
+        return APIService.getTopRatedMovies(API_KEY, CurrentPage);
+    }
+
+    private List<APIResults> fetchResults(Response<MovieModel> response){
+        MovieModel movies = response.body();
+        return movies.getResults();
+    }
+
+    private void loadFirstPage() {
+        CallTopRatedMovies().enqueue(new Callback<MovieModel>() {    //4
+            @Override
+            public void onResponse(Call<MovieModel> call, Response<MovieModel> response) {
+
+                List<APIResults> results = fetchResults(response);    //5
+                adapter.addAll(results);
+
+                if (CurrentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
+                else isLastPage = true;
+            }
+
+            @Override
+            public void onFailure(Call<MovieModel> call, Throwable t) {
+
+            }
+
+        });
+    }
     @Override
     public void onItemClick(MovieModel item) {
         Toast.makeText(this, "This is on the main page", Toast.LENGTH_SHORT).show();
 
     }
 
-    private List<Result> fetchResults(Response<MovieModel> response) {
-        MovieModel model = response.body();
-        return topRatedMovies.getResults();
-    }
 
     private void LoadNextData(int page){
         Log.d(TAG, "loadNextPage: " + page);
@@ -92,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Item
             public void onResponse(Call<MovieModel> call, Response<MovieModel> response) {
                 adapter.removeLoadingFooter();
 
-                List<Result> results = fetchResults(response);
+                List<APIResults> results = fetchResults(response);
                 adapter.addAll(results);
 
                 if (currentPage != TOTAL_PAGES) adapter.addLoadingFooter();

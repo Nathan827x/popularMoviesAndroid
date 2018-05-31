@@ -1,10 +1,11 @@
 package com.example.nathan.popularmovies;
 
+import com.example.nathan.popularmovies.models.MovieModel;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
